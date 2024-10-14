@@ -1,30 +1,33 @@
 package com.endava.petclinic;
 
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@JsonIgnoreProperties(ignoreUnknown = true) // orice proprietate care este in strig-ul de json, dar nu este in clasa o sa fie ignorata
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Owner {
 
-    private Long id; // nu folosim primitive ca sunt clase model
-    private String firstName; // fix ca in json
+    private Long id;
+    private String firstName;
     private String lastName;
-    private String address;
+    private String addrees;
     private String city;
     private String telephone;
+    private List<Pet> pets;
 
-    public Owner() { // avem nevoie de constructor default pentru a face deserializare
+    public Owner() {
     }
 
-    public Owner(final String firstName, final String lastName, final String address, final String city, final String telephone) {
+    public Owner( Long id,final String firstName, final String lastName, final String addrees, final String city, final String telephone) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
+        this.addrees = addrees;
         this.city = city;
         this.telephone = telephone;
+        this.id = id ;
     }
 
     public Long getId() {
@@ -52,11 +55,11 @@ public class Owner {
     }
 
     public String getAddress() {
-        return address;
+        return addrees;
     }
 
     public void setAddress(final String address) {
-        this.address = address;
+        this.addrees = addrees;
     }
 
     public String getCity() {
@@ -84,15 +87,15 @@ public class Owner {
             return false;
         }
         final Owner owner = (Owner) o;
-        return //Objects.equals(id, owner.id) && // nu avem nevoie sa facem validare pe id deoarce nu o sa fie niciodata egal
-                Objects.equals(firstName, owner.firstName) && Objects.equals(lastName, owner.lastName) && Objects.equals(address,
-                owner.address) && Objects.equals(city, owner.city) && Objects.equals(telephone, owner.telephone);
+        return //Objects.equals(id, owner.id) && //
+                Objects.equals(firstName, owner.firstName) && Objects.equals(lastName, owner.lastName) && Objects.equals(addrees,
+                owner.addrees) && Objects.equals(city, owner.city) && Objects.equals(telephone, owner.telephone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(//id , // nu avem nevoie de id deoarce nu avem nevoie sa fie egale id-urile
-                 firstName, lastName, address, city, telephone);
+        return Objects.hash(//id ,
+                 firstName, lastName, addrees, city, telephone);
     }
 
     @Override
@@ -101,9 +104,7 @@ public class Owner {
         try {
             return objectMapper.writeValueAsString( this); //this se refara la oboctul pe care este apelata metode toString
         } catch (JsonProcessingException e) {
-            return super.toString(); // metoda asta merge pentru orice clasa indiferent pentru cate filduri
-            // this se refera la obictul curent
-            // super se refera la parinte
+            return super.toString();
         }
 
     }
