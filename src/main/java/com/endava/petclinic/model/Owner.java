@@ -1,4 +1,4 @@
-package com.endava.petclinic;
+package com.endava.petclinic.model;
 
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +13,7 @@ public class Owner {
     private Long id;
     private String firstName;
     private String lastName;
-    private String addrees;
+    private String address;
     private String city;
     private String telephone;
     private List<Pet> pets;
@@ -24,7 +24,7 @@ public class Owner {
     public Owner( Long id,final String firstName, final String lastName, final String addrees, final String city, final String telephone) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.addrees = addrees;
+        this.address = addrees;
         this.city = city;
         this.telephone = telephone;
         this.id = id ;
@@ -55,11 +55,11 @@ public class Owner {
     }
 
     public String getAddress() {
-        return addrees;
+        return address;
     }
 
     public void setAddress(final String address) {
-        this.addrees = addrees;
+        this.address = address;
     }
 
     public String getCity() {
@@ -88,21 +88,21 @@ public class Owner {
         }
         final Owner owner = (Owner) o;
         return //Objects.equals(id, owner.id) && //
-                Objects.equals(firstName, owner.firstName) && Objects.equals(lastName, owner.lastName) && Objects.equals(addrees,
-                owner.addrees) && Objects.equals(city, owner.city) && Objects.equals(telephone, owner.telephone);
+                Objects.equals(firstName, owner.firstName) && Objects.equals(lastName, owner.lastName) && Objects.equals(address,
+                owner.address) && Objects.equals(city, owner.city) && Objects.equals(telephone, owner.telephone);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(//id ,
-                 firstName, lastName, addrees, city, telephone);
+                 firstName, lastName, address, city, telephone);
     }
 
     @Override
     public String toString() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.writeValueAsString( this); //this se refara la oboctul pe care este apelata metode toString
+            return objectMapper.writeValueAsString( this);
         } catch (JsonProcessingException e) {
             return super.toString();
         }

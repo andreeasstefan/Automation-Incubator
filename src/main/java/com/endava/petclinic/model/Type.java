@@ -1,4 +1,4 @@
-package com.endava.petclinic;
+package com.endava.petclinic.model;
 
 import java.util.Objects;
 

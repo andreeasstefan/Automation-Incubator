@@ -1,24 +1,17 @@
-package com.endava.petclinic;
+package com.endava.petclinic.model;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.List;
 import java.util.Objects;
 
 public class Pet {
-    private int id;
+    private Long id;
     private String name;
     private String birthDate;
     private Owner owner;
     private Type type;
     //private List<Visit> visits;
 
-    public Pet( int id, String name, String birthDate,Type type,Owner owner) {
+    public Pet( Long id,String name, String birthDate,Type type,Owner owner) {
         this.name = name;
         this.birthDate = birthDate;
         this.owner = owner;
@@ -27,11 +20,15 @@ public class Pet {
         //this.visits = visits;
     }
 
-    public int getId() {
+
+    public Pet() {
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -67,6 +64,7 @@ public class Pet {
         this.type = type;
     }
 
+
 //    public List<Visit> getVisits() {
 //        return visits;
 //    }
@@ -101,3 +99,4 @@ public class Pet {
     }
 
 }
+

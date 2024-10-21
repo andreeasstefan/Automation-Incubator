@@ -10,6 +10,7 @@
 
     <properties>
         <log4j.version>2.17.0</log4j.version>
+        <env>qa</env>
     </properties>
 
     <dependencies>
@@ -89,12 +90,22 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>5.4.0</version>
-            <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.0</version>
+        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.15.2</version>
+            <version>2.15.0</version>
         </dependency>
 
     </dependencies>
@@ -114,9 +125,12 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.0</version>
                 <configuration>
-                    <groups>smoke</groups>
-                    <excludedGroups>api</excludedGroups>
-                    <!-- <skip>true</skip> -->
+                    <!--                    <groups>smoke</groups>-->
+                    <!--                    <excludedGroups>api</excludedGroups>-->
+                    <!--                    &lt;!&ndash; <skip>true</skip> &ndash;&gt;-->
+                    <systemPropertyVariables>
+                        <env>${env}</env>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
             <plugin>
