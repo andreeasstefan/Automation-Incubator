@@ -1,4 +1,4 @@
-package com.endava.petclinic;
+package com.endava.petclinic.model;
 
 import java.util.Objects;
 
@@ -44,9 +44,9 @@ public class Type {
                 '}';
     }
 
-    public Type(int id, String name) {
-        this.id = id;
+    public Type(int id, String name) {;
         this.name = name;
+        this.id = id;
     }
 
     public Type() {

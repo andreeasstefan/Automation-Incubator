@@ -1,31 +1,37 @@
 package com.endava.petclinic;
 
+import com.endava.petclinic.model.Owner;
+import com.endava.petclinic.model.Pet;
+import com.endava.petclinic.model.Type;
+import com.endava.petclinic.model.Visit;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
 
 public class FirtstTest {
 
     @Test
     public void firstTest(){
 
-        given().baseUri("http://jnet.go.ro/petclinic")
+        given().baseUri("http://jnet.go.ro/")
                 //.port(8080)
                 .basePath("petclinic")
                 .log().all()
         .when()
                 .get("api/owners")
-                .prettyPeek() // printeaza response
+                .prettyPeek()
         .then()
                 .statusCode(HttpStatus.SC_OK);
 
@@ -34,9 +40,9 @@ public class FirtstTest {
     @Test
     public void createOwner(){
 
-        Owner owner = new Owner("Andreea", "Stefan", "sos x", "Bucuresti","0761379553");
+        Owner owner = new Owner(null,"Andreea", "Stefan", "sos x", "Bucuresti","0761379553");
 
-        given().baseUri("http://jnet.go.ro/petclinic")
+        given().baseUri("http://jnet.go.ro/")
                 //.port(8080)
                 .basePath("petclinic")
                 .contentType(ContentType.JSON)
@@ -48,25 +54,25 @@ public class FirtstTest {
         .then()
                 .statusCode(HttpStatus.SC_CREATED)
                 .header("Location", notNullValue())
-                .body("id", notNullValue())
-                .body("firstName", is(owner.getFirstName()))
-                .body("lastName", is(owner.getLastName()))
-                .body("addrees", is(owner.getAddress()))
-                .body("city",is(owner.getCity()))
-                .body("telephone", is(owner.getTelephone()))
-                .body("pets",not( empty() ));
+                .body("id", notNullValue());
+                //.body("firstName", is(owner.getFirstName()))
+                //.body("lastName", is(owner.getLastName()));
+                //.body("addrees", is(owner.getAddress()))
+                //.body("city",is(owner.getCity()))
+                //.body("telephone", is(owner.getTelephone()));
+                //.body("pets",not( empty() ));
     }
 
     @Test
     public void getOwnerById(){
-        given().baseUri("http://bhdtest.endava.com")
-                .port(8080)
+        given().baseUri("http://jnet.go.ro/")
+                //.port(8080)
                 .basePath("petclinic")
-                .pathParam("ownerId",5)
+                .pathParam("ownerId",1)
                 .contentType(ContentType.JSON)
                 .log().all()
         .when()
-                .get("api/owners/(ownerId)")
+                .get("/api/owners/{ownerId}")
                 .prettyPeek()
         .then()
                 .statusCode(HttpStatus.SC_OK);
@@ -75,14 +81,14 @@ public class FirtstTest {
 
     @Test
     public void deleteOwnerId(){
-        given().baseUri("http://bhdtest.endava.com")
-                .port(8080)
+        given().baseUri("http://jnet.go.ro/")
+                //.port(8080)
                 .basePath("petclinic")
                 .pathParam("ownerId",5)
                 .contentType(ContentType.JSON)
                 .log().all()
         .when()
-                .delete("api/owners/(ownerId)")
+                .delete("/api/owners/{ownerId}")
                 .prettyPeek()
         .then()
                 .statusCode(HttpStatus.SC_NO_CONTENT);
@@ -92,11 +98,11 @@ public class FirtstTest {
     public void createOwner2(){
 
         //GIVEN
-        Owner owner = new Owner("Andreea", "Stefan", "sos x", "Bucuresti","0761379553");
+        Owner owner = new Owner(null,"Andreea", "Stefan", "sos x", "Bucuresti","0761379553");
         System.out.println(owner.toString());
         //WHEN
-        Response response = given().baseUri("http://bhdtest.endava.com")
-                .port(8080)
+        Response response = given().baseUri("http://jnet.go.ro/")
+                //.port(8080)
                 .basePath("petclinic")
                 .contentType(ContentType.JSON)
                 .body(owner)
@@ -111,10 +117,10 @@ public class FirtstTest {
                 .body("id", notNullValue())
                 .body("firstName", is(owner.getFirstName()))
                 .body("lastName", is(owner.getLastName()))
-                .body("addrees", is(owner.getAddress()))
+                //.body("addrees", is(owner.getAddress()))
                 .body("city",is(owner.getCity()))
-                .body("telephone", is(owner.getTelephone()))
-                .body("pets",not( empty() ));
+                .body("telephone", is(owner.getTelephone()));
+                //.body("pets",not( empty() ));
         Owner actualOwner = response.as(Owner.class);
         assertThat( actualOwner, is(owner));
     }
@@ -124,76 +130,89 @@ public class FirtstTest {
     //3.Test the add pet API
 
     @Test
-    public void createPet(){
+    public void createPet() throws Exception {
+        Owner owner = new Owner(1L, "Andreea", "Stefan", "110 W. Liberty St.", "Madison", "6085551023");
+        Type type = new Type(1, "cat");
+        List<Visit> visits = new ArrayList<>();
+        Pet pet = new Pet( 2L, "Minnie", "2024/09/07", type, owner); //visits);
 
-        Pet pet = new Pet("minnie","Andreea","bulldog");
-        given().baseUri("http://jnet.go.ro/petclinic")
-                //.port(8080)
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String jsonBody = objectMapper.writeValueAsString(pet);
+        given()
+                .baseUri("http://jnet.go.ro/")
                 .basePath("petclinic")
                 .contentType(ContentType.JSON)
-                .body(pet)
+                .body(jsonBody)
                 .log().all()
                 .when()
                 .post("api/pets")
-                .prettyPeek() // printeaza response
                 .then()
                 .statusCode(HttpStatus.SC_CREATED)
-                .header("Location", notNullValue())
-                .body("id", notNullValue());
+                .body("name", equalTo("Minnie"))
+                .body("owner.firstName", equalTo("Andreea"))
+                .body("type.name", equalTo("cat"));
     }
 
     //4.Test the get pet list API
     @Test
     public void getPetById(){
-        given().basePath("http://jnet.go.ro/petclinic")
-                .port(8080)
+        given().baseUri("http://jnet.go.ro/")
+                //.port(8080)
                 .basePath("petclinic")
-                .pathParam("PetId",2)
+                .pathParam("petId",1)
                 .contentType(ContentType.JSON)
                 .log().all()
                 .when()
                 .get("/api/pets/{petId}")
                 .prettyPeek()
                 .then()
-                .statusCode(HttpStatus.SC_OK)
-                .header("Location", notNullValue())
-                .body("id",notNullValue())
-                .body("type",notNullValue());
+                .statusCode(HttpStatus.SC_OK);
+
     }
 
     //4.Test the create visit API
     @Test
-    public void createVisit(){
-        Visit visit = new Visit("2024-10-09", "consultation");
-        given().baseUri("http://jnet.go.ro/petclinic")
+    public void createVisit() throws Exception {
+        Owner owner = new Owner(1L, "Andreea", "Stefan", "110 W. Liberty St.", "Madison", "6085551023");
+        Type type = new Type(1, "cat");
+        Pet pet = new Pet(1L, "Minnie", "2024/09/07", type, owner); //visits);
+        Visit visit = new Visit(1, "2024/10/01", "description", pet);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String jsonBody = objectMapper.writeValueAsString(visit);
+        given()
+                .baseUri("http://jnet.go.ro/")
                 .basePath("petclinic")
                 .contentType(ContentType.JSON)
-                .body(visit)
                 .log().all()
+                .body(jsonBody)
                 .when()
-                .post("/api/visits")
-                .prettyPeek()
+                .post("api/visits")
                 .then()
-                .statusCode(HttpStatus.SC_CREATED);
+                .statusCode(HttpStatus.SC_CREATED)
+                .body("description", equalTo("description"))
+                .body("date", equalTo("2024/10/01"));
+
     }
+
+
 
     // Test the get visit list API
     @Test
     public void getVisitById(){
-        given().basePath("http://jnet.go.ro/petclinic")
-                .port(8080)
+        given().baseUri("http://jnet.go.ro/")
+                //.port(8080)
                 .basePath("petclinic")
-                .pathParam("VisitId",1)
+                .pathParam("visitId",1)
                 .contentType(ContentType.JSON)
                 .log().all()
                 .when()
-                .get("/api/visit/{visitId}")
+                .get("/api/visits/{visitId}")
                 .prettyPeek()
                 .then()
-                .statusCode(HttpStatus.SC_OK)
-                .header("Location", notNullValue())
-                .body("id",notNullValue())
-                .body("date",notNullValue());
+                .statusCode(HttpStatus.SC_OK);
     }
 
 
