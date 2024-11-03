@@ -87,7 +87,7 @@ public class Owner {
             return false;
         }
         final Owner owner = (Owner) o;
-        return //Objects.equals(id, owner.id) && //
+        return //Objects.equals(id, owner.id) &&//
                 Objects.equals(firstName, owner.firstName) && Objects.equals(lastName, owner.lastName) && Objects.equals(address,
                 owner.address) && Objects.equals(city, owner.city) && Objects.equals(telephone, owner.telephone);
     }

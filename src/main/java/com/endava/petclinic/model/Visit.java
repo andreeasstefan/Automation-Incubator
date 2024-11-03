@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Visit {
 
-    private int id;
+    private long id;
     private String date;
     private String description;
     private Pet pet;
@@ -16,7 +16,7 @@ public class Visit {
         this.pet = pet;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
