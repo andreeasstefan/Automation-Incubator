@@ -44,9 +44,9 @@ public class Type {
                 '}';
     }
 
-    public Type(int id, String name) {;
-        this.name = name;
+    public Type(int id,String name) {;
         this.id = id;
+        this.name=name;
     }
 
     public Type() {

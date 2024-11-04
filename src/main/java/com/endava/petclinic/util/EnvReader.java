@@ -28,6 +28,27 @@ public class EnvReader {
 
     public static String getBasePath(){
         return properties.getProperty("basePath");
+    }
+
+        public static String  getAdminUsername(){
+            return properties.getProperty("admin.username");
+        }
+
+        public static String  getAdminPassword(){
+            return properties.getProperty("admin.password");
+        }
+
+        public  static String getDBUrl(){
+            return properties.getProperty("spring.datasource.url");
+        }
+
+        public static String getDbUsername(){
+            return properties.getProperty("spring.datasource.username");
+        }
+
+        public  static String  getDbPassword(){
+            return properties.getProperty("spring.datasource.password");
+        }
 
     }
-}
+

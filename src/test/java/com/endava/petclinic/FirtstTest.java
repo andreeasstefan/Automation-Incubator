@@ -5,7 +5,6 @@ import com.endava.petclinic.model.Pet;
 import com.endava.petclinic.model.Type;
 import com.endava.petclinic.model.Visit;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
@@ -132,18 +131,18 @@ public class FirtstTest {
     @Test
     public void createPet() throws Exception {
         Owner owner = new Owner(1L, "Andreea", "Stefan", "110 W. Liberty St.", "Madison", "6085551023");
-        Type type = new Type(1, "cat");
+        Type type = new Type(1,"cat");
         List<Visit> visits = new ArrayList<>();
         Pet pet = new Pet( 2L, "Minnie", "2024/09/07", type, owner); //visits);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        String jsonBody = objectMapper.writeValueAsString(pet);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.registerModule(new JavaTimeModel());
+//        String jsonBody = objectMapper.writeValueAsString(pet);
         given()
                 .baseUri("http://jnet.go.ro/")
                 .basePath("petclinic")
                 .contentType(ContentType.JSON)
-                .body(jsonBody)
+                .body(pet)
                 .log().all()
                 .when()
                 .post("api/pets")
@@ -175,19 +174,19 @@ public class FirtstTest {
     @Test
     public void createVisit() throws Exception {
         Owner owner = new Owner(1L, "Andreea", "Stefan", "110 W. Liberty St.", "Madison", "6085551023");
-        Type type = new Type(1, "cat");
+        Type type = new Type(1,"cat");
         Pet pet = new Pet(1L, "Minnie", "2024/09/07", type, owner); //visits);
         Visit visit = new Visit(1, "2024/10/01", "description", pet);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        String jsonBody = objectMapper.writeValueAsString(visit);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.registerModule(new JavaTimeModule());
+//        String jsonBody = objectMapper.writeValueAsString(visit);
         given()
                 .baseUri("http://jnet.go.ro/")
                 .basePath("petclinic")
                 .contentType(ContentType.JSON)
                 .log().all()
-                .body(jsonBody)
+                .body(visit)
                 .when()
                 .post("api/visits")
                 .then()

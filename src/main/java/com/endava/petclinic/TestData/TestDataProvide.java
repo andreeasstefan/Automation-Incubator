@@ -41,7 +41,7 @@ public class TestDataProvide {
         Type type = new Type();
         String randomAnimal = animals.get(random.nextInt(animals.size()));
         type.setName(randomAnimal);
-        type.setId(faker.number().numberBetween(1,3));
+        type.setId(faker.number().numberBetween(1,6));
         return type;
     }
 

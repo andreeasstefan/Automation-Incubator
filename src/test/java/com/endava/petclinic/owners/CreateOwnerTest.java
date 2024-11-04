@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -20,8 +21,11 @@ public class CreateOwnerTest extends TestBaseClass {
         //WHEN
         Response response = ownerClient.createOwner(owner);
         //THEN
-        response.prettyPeek().then().statusCode(HttpStatus.SC_CREATED)
+        response.then().statusCode(HttpStatus.SC_CREATED)
                 .body("id", is(notNullValue()));
+//        long id = response.body().jsonPath().getLong("id");
+//        Owner actualOwnerInDB = db.getOwnerById(id);
+//        assertThat(actualOwnerInDB, is(owner));
     }
 
     @Test

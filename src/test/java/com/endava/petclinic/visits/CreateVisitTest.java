@@ -1,7 +1,6 @@
 package com.endava.petclinic.visits;
 
 import com.endava.petclinic.TestBaseClass;
-import com.endava.petclinic.client.PetClient;
 import com.endava.petclinic.client.VisitClient;
 import com.endava.petclinic.model.Owner;
 import com.endava.petclinic.model.Pet;
@@ -18,18 +17,11 @@ public class CreateVisitTest extends TestBaseClass {
     @Test
     public void shouldCreateVisit() {
         //GIVEN
-        Owner owner = testDataProvider.getOwner();
-        Response createOwnerResponse = ownerClient.createOwner(owner);
-        createOwnerResponse.then().statusCode(HttpStatus.SC_CREATED);
-        Long ownerId = createOwnerResponse.body().jsonPath().getLong("id");
-        owner.setId(ownerId);
+        Owner owner = fixture.createOwner()
+                .getOwner();
 
-        Pet pet = testDataProvider.getPet();
-        pet.setOwner(owner);
-        Response createPetResponse = petClient.createPet(pet);
-        createPetResponse.then().statusCode(HttpStatus.SC_CREATED);
-        Long petId = createPetResponse.body().jsonPath().getLong("id");
-        pet.setId(petId);
+        Pet pet = fixture.createPet()
+                .getPet();
 
         Visit visit = testDataProvider.getVisit();
         visit.setPet(pet);
